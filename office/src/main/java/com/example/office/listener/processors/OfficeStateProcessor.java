@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OfficeStateProcessor implements MessageProcessor<OfficeStateMessage> {
 
-    private final MessageConverter messageConverter;
+    private final MessageConverter converter;
     private final AirPortsProvider airPortsProvider;
     //To send the messages about airport's state/condition
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -24,7 +24,7 @@ public class OfficeStateProcessor implements MessageProcessor<OfficeStateMessage
     @Override
     public void process(String jsonMessage) {
         airPortsProvider.getPorts().forEach(airPort -> {
-            kafkaTemplate.sendDefault(messageConverter.toJson(new AirPortStateMessage(airPort)));
+            kafkaTemplate.sendDefault(converter.toJson(new AirPortStateMessage(airPort)));
         });
     }
 }

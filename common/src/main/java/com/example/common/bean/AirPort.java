@@ -13,7 +13,7 @@ import java.util.List;
 public class AirPort {
 
     private String name;
-    private List<String> boards = new ArrayList<>();
+    private List<String> boards = new ArrayList<>(); // list of planes that r atm at airport
     private int x;
     private int y;
 

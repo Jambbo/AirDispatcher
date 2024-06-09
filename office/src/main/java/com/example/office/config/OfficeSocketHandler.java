@@ -16,7 +16,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @RequiredArgsConstructor
 public class OfficeSocketHandler extends TextWebSocketHandler {
 
-    private final MessageConverter messageConverter;
+    private final MessageConverter converter;
     private final Cache<String, WebSocketSession> sessionCache;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -27,7 +27,7 @@ public class OfficeSocketHandler extends TextWebSocketHandler {
         }
         //update it is when office just run and asks for updates and then we r producing an event
         if (message.getPayload().equals("update")) {
-            kafkaTemplate.sendDefault(messageConverter.toJson(new OfficeStateMessage()));
+            kafkaTemplate.sendDefault(converter.toJson(new OfficeStateMessage()));
         }
     }
 }

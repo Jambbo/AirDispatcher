@@ -15,13 +15,13 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @RequiredArgsConstructor
 public class OfficeSocketConfiguration implements WebSocketConfigurer {
 
-    private final MessageConverter messageConverter;
+    private final MessageConverter converter;
     private final Cache<String, WebSocketSession> sessionCache;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new OfficeSocketHandler(messageConverter,sessionCache,kafkaTemplate))
+        registry.addHandler(new OfficeSocketHandler(converter,sessionCache,kafkaTemplate))
                 .setAllowedOrigins("*");
     }
 }

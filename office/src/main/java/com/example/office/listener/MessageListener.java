@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MessageListener {
 
-    private final MessageConverter messageConverter;
+    private final MessageConverter converter;
     private final Cache<String, WebSocketSession> sessionCache;
 
     @Autowired
@@ -29,7 +29,7 @@ public class MessageListener {
 
     @KafkaListener(id = "OfficeGroupId", topics = "officeRoutes")
     public void kafkaListen(String data) {
-        String code = messageConverter.extractCode(data);
+        String code = converter.extractCode(data);
         sendKafkaMessageToSocket(data);
         try {
             processors.get(code).process(data);

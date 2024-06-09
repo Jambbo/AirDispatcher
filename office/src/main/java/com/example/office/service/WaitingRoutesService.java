@@ -5,6 +5,7 @@ import com.example.common.bean.Route;
 import com.example.common.bean.RoutePath;
 import com.example.common.bean.RoutePoint;
 import com.example.office.provider.AirPortsProvider;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class WaitingRoutesService {
 
     private final Lock lock = new ReentrantLock(true);
+    @Getter
     private final List<Route> list = new ArrayList<>();
 
-    public List<Route> list(){
-        return list;
-    }
     //Adding the route
     public void add(Route route){
         try{

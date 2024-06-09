@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardStateProcessor implements MessageProcessor<BoardStateMessage> {
 
-    private final MessageConverter messageConverter;
+    private final MessageConverter converter;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     //to throw from waitingRoutesService the routes that board took
@@ -36,7 +36,7 @@ public class BoardStateProcessor implements MessageProcessor<BoardStateMessage> 
 
     @Override
     public void process(String jsonMessage) {
-        BoardStateMessage message  = messageConverter.extractMessage(
+        BoardStateMessage message  = converter.extractMessage(
                 jsonMessage,BoardStateMessage.class
         );
         Board board = message.getBoard();
@@ -55,7 +55,7 @@ public class BoardStateProcessor implements MessageProcessor<BoardStateMessage> 
         if(previousOptional.isEmpty() || !board.isBusy() && previousOptional.get().isBusy()){
             airPort.addBoard(board.getName());
             //airport state was changed, new plane arrived, and then we are telling to kafka about this =>
-            kafkaTemplate.sendDefault(messageConverter.toJson(new AirPortStateMessage(airPort)));
+            kafkaTemplate.sendDefault(converter.toJson(new AirPortStateMessage(airPort)));
         }
 
     }
